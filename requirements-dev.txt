@@ -2,7 +2,9 @@
 coverage != 6.3, != 6.3.*
 datasets
 hypothesis
+language_tool_python
 mypy
+pandas
 pandas-stubs
 pre-commit
 psutil
@@ -10,11 +12,14 @@ pytest~=7.4
 pytest-cov
 requests
 scipy
+sentence_transformers
 skorch
 tensorflow<2.16
+textstat
 torch
 torchvision
 typing-extensions>=4.8.0
 wget
 matplotlib
 pillow
+zipfile

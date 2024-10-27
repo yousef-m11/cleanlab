@@ -1,4 +1,6 @@
 import pandas as pd
+import os
+import zipfile
 from sklearn.metrics import accuracy_score, pairwise
 from sklearn.model_selection import train_test_split, cross_val_predict
 from sklearn.preprocessing import LabelEncoder
@@ -39,6 +41,8 @@ def assess_lexical_quality(text):
     # Coherence (basic implementation)
     simple_coherence_score = sum(len(sentence.split()) for sentence in sentences) / len(sentences) if sentences else 0
     metrics['simple_coherence'] = simple_coherence_score
+
+    print(metrics)
 
     return metrics
 
@@ -124,6 +128,34 @@ def lexical_quality(texts):
     df_metrics['flag_label_issue'] = df_metrics.apply(filter_by_lexical_quality, axis=1)
 
     return df_metrics 
+
+def extract_and_read_txt_files(zip_path):
+    # Create a directory to extract files
+    extraction_path = 'extracted_files'
+    os.makedirs(extraction_path, exist_ok=True)
+
+    # Extract the zip file
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(extraction_path)
+
+    # List to store the contents of the text files
+    text_contents = []
+
+    # Read each .txt file and convert to string
+    for filename in os.listdir(extraction_path):
+        if filename.endswith('.txt'):
+            file_path = os.path.join(extraction_path, filename)
+            with open(file_path, 'r', encoding='utf-8') as file:
+                text_contents.append(file.read())
+
+    return text_contents
+
+
+#def testing_local():
+ #   texts = extract_and_read_txt_files('cleanlab/lexical_quality/example_dataset/example.zip')
+  #  lexical_quality(texts)
+
+
 
 
 
