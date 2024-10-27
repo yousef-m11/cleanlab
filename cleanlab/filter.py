@@ -33,6 +33,7 @@ import platform
 
 from cleanlab.count import calibrate_confident_joint, num_label_issues, _reduce_issues
 from cleanlab.rank import order_label_issues, get_label_quality_scores
+import cleanlab.lexical_quality.lexical_filter as lexical_filter
 import cleanlab.internal.multilabel_scorer as ml_scorer
 from cleanlab.internal.validation import assert_valid_inputs
 from cleanlab.internal.util import (
@@ -447,6 +448,9 @@ def find_label_issues(
         # Remove label issues if model prediction is close to given label
         mask = _reduce_issues(pred_probs=pred_probs, labels=labels)
         label_issues_mask[mask] = False
+
+    if filter_by == "lexical_quality":
+
 
     if verbose:
         print("Number of label issues found: {}".format(sum(label_issues_mask)))
