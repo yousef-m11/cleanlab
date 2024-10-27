@@ -1,5 +1,3 @@
-import re
-import string
 import pandas as pd
 from sklearn.metrics import accuracy_score, pairwise
 from sklearn.model_selection import train_test_split, cross_val_predict
@@ -45,6 +43,7 @@ def assess_lexical_quality(text):
     return metrics
 
 def filter_by_lexical_quality(metrics):
+    # Determine using the lexical quality metrics if they indicate an issue with the lexical quality that could affect the labelling
 
     poor = 0
     moderate = 0
@@ -112,6 +111,8 @@ def filter_by_lexical_quality(metrics):
 
 def lexical_quality(texts):
 
+    #Create a dataframe containing the text, the corresponding metrics, and a boolean indicating if there is likely to be an issue before applying in the CL algorithm.
+
     metrics_list = []
 
     for text in texts:
@@ -119,7 +120,7 @@ def lexical_quality(texts):
         metrics_list.append(metrics)
 
     df_metrics = pd.DataFrame(metrics_list)
-    
+    df_metrics['text'] = texts #Add original texts as a column
     df_metrics['flag_label_issue'] = df_metrics.apply(filter_by_lexical_quality, axis=1)
 
     return df_metrics 

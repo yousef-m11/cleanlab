@@ -450,7 +450,13 @@ def find_label_issues(
         label_issues_mask[mask] = False
 
     if filter_by == "lexical_quality":
+        #Remove labels with issues as determined by the lexical quality filter
+        df_lexical_metrics = lexical_filter.lexical_quality()
+        flagged_metrics = df_lexical_metrics[df_lexical_metrics['flag_label_issue'] == True]
+        flagged_texts = flagged_metrics['text'].tolist()
 
+        mask = _reduce_issues(pred_probs=pred_probs, labels=flagged_texts)
+        label_issues_mask[mask] = False
 
     if verbose:
         print("Number of label issues found: {}".format(sum(label_issues_mask)))
